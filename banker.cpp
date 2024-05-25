@@ -76,6 +76,35 @@ bool is_safe(void)
     }
 }
 
+bool test_safe(void)
+{
+	int tempneed[RN] , tempalloc[RN] , tempavail[RN] ,tp , save ;
+	tp = request[0] ;
+	for(r = 0 ; r < RN ; r++)
+	{
+		tempneed[r] = need[tp][r];
+		tempalloc[r] = alloc[tp][r];
+		tempavail[r] = available[r] ;
+		need[tp][r] = need[tp][r] - request[r+1];
+		alloc[tp][r] = alloc[tp][r] + request[r+1];
+		available[r] = available[r] - request[r+1];
+	}
+	if(is_safe() == true)	{ cout << "\nThe request is accepted because the system will still safe\n";  return true; }
+	else
+	{
+		cout << "\nThe request is rejected because the system will be unsafe\n";  
+		for(r = 0 ; r < RN ; r++)
+		{
+			need[tp][r] = tempneed[r] ;
+			alloc[tp][r] = tempalloc[r] ;
+			available[r] = tempavail[r] ;
+		}
+		return false; 
+	}
+}
+
+
+
 void main(void)
 {
     calculate_need();
